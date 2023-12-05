@@ -1,7 +1,10 @@
 import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import axios from 'axios'
 
 
 const Login = () => {
+    const navigate = useNavigate();
     const [ creds, setCreds ] = useState({
         username: '',
         password: ''
@@ -14,11 +17,24 @@ const Login = () => {
         })
     }
 
-    console.log(creds)
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        //console.log('you made it there, kiddo!')
+        axios.post('http://localhost:9000/api/login', creds)
+        .then(res => {
+            localStorage.setItem("token", res.data.token)
+            //console.log(res.data.token)
+            navigate('/friends');
+        })
+        .catch(err => {
+            console.log(err)
+        })
+    }
+
     return (
         <div>
             <h1>Login</h1>
-            <form>
+            <form onSubmit={handleSubmit}>
                 <div>
                     <label htmlFor='username'>Username:</label>
                     <input onChange={handleChange} name='username' id='username'/>
