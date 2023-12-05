@@ -1,10 +1,26 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
+import { useNavigate } from 'react-router-dom'
+import { useAuth } from '../hooks'
 
 
 const FriendsList = () => {
 
     const [ friends, setFriends ] = useState([]);
+    const navigate = useNavigate();
+    const { auth, checkAuth } = useAuth(() => navigate('/login'))
+
+        const sensitiveStuff = async () => {
+            await checkAuth()
+            //
+        }
+        if(!auth){
+            return (
+                <div>
+                    Please Wait...
+                </div>
+            )
+        }
 
     useEffect(() => {
         const token = localStorage.getItem('token')
